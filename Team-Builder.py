@@ -11,15 +11,15 @@ class TeamView(arcade.Window):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
         arcade.set_background_color(arcade.color.LIGHT_SKY_BLUE)
 
-        self.scoreboard = arcade.Text(f'Scoreboard',
-                                      start_x= SCREEN_WIDTH * .05,
+        self.scoreboard = arcade.Text(f'Win/Loss/Draw Ratio',
+                                      start_x= SCREEN_WIDTH * .01,
                                       start_y= SCREEN_HEIGHT * .95,
                                       color=(255,255,255),
                                       font_size=14,
                                       )
         
-        self.score = arcade.Text(f'Home: 0  Away: 0',
-                                      start_x= SCREEN_WIDTH * .01,
+        self.score = arcade.Text(f'10-3-0',
+                                      start_x= SCREEN_WIDTH * .05,
                                       start_y= SCREEN_HEIGHT * .9,
                                       color=(255,255,255),
                                       font_size=14,
