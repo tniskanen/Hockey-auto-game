@@ -1,4 +1,13 @@
-import random
+import arcade
 
-for i in 4:
-    print(i)
+me = arcade.Sprite()
+
+me_list = arcade.SpriteList()
+
+me_list.append(me)
+me_list.append(me)
+
+me_list.append(me)
+
+
+print(len(me_list))

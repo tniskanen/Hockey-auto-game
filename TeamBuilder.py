@@ -1,6 +1,6 @@
 import arcade
 import arcade.gui
-import players as p
+from players import shop1
 import random
 
 
@@ -8,10 +8,10 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 TITLE = 'HOCKEY BRAWLERS'
 
-class TeamView(arcade.Window):
+class TeamBuilder(arcade.View):
     def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
-        arcade.set_background_color(arcade.color.LIGHT_SKY_BLUE)
+        super().__init__()
+
         self.setup()
         
     def on_draw(self):
@@ -22,25 +22,18 @@ class TeamView(arcade.Window):
         self.score.draw()
 
         self.current_team.draw()
-        self.shop_sprite_list.draw()
+        self.shop_sprite_1.draw()
+        self.shop_sprite_2.draw()
+        self.shop_sprite_3.draw()
+        self.shop_sprite_4.draw()
 
-    def on_update(self, delta_time: float):
-        self.shop_sprite_list.update()
-        self.current_team.update()
+    # def on_update(self, delta_time: float):
+    #     self.shop_list.update()
+    #     self.current_team.update()
 
     def setup(self):
-        self.current_team = arcade.SpriteList() 
-        self.shop_sprite_list = arcade.SpriteList()
+        self.current_team = arcade.SpriteList()
 
-        self.shop_list = []
-        self.all_players = []
-        self.Crosby = p.Crosby()
-        self.Burns = p.Burns()
-        self.Ovechkin = p.Ovechkin()
-
-        self.all_players.append(self.Crosby)
-        self.all_players.append(self.Burns)
-        self.all_players.append(self.Ovechkin)
 
         self.refresh_button_clicked(event=True)
 
@@ -109,41 +102,48 @@ class TeamView(arcade.Window):
                 anchor_x="center_x",
                 anchor_y="center_y",
                 child=self.widgets))
+        
 
-    def create_sprites(self, list):
-        length = len(list)
-        for i in range(length):
-            image = list[i].image
-            name = list[i].name
-            name = arcade.Sprite(image,
-                                 scale=.15
-                                         )
-            self.shop_sprite_list.append(name)
-            #print(self.shop_sprite_list[i])
-    def position_sprites(self, SpriteList):
-        SpriteList[0].set_position(center_x=SCREEN_WIDTH*.6,
+    def position_shop_sprites(self, list1, list2, list3, list4):
+        list1.set_position(center_x=SCREEN_WIDTH*.6,
+                                    center_y=SCREEN_HEIGHT*.8)
+        list2.set_position(center_x=SCREEN_WIDTH*.7,
                                    center_y=SCREEN_HEIGHT*.8)
-        SpriteList[1].set_position(center_x=SCREEN_WIDTH*.7,
+        list3.set_position(center_x=SCREEN_WIDTH*.8,
                                    center_y=SCREEN_HEIGHT*.8)
-        SpriteList[2].set_position(center_x=SCREEN_WIDTH*.8,
-                                   center_y=SCREEN_HEIGHT*.8)
-        SpriteList[3].set_position(center_x=SCREEN_WIDTH*.9,
+        list4.set_position(center_x=SCREEN_WIDTH*.9,
                                    center_y=SCREEN_HEIGHT*.8)
 
     def refresh_button_clicked(self, event):
-        self.shop_sprite_list.clear()
-        self.shop_list.clear()
-        for i in range(0, 4):
-            num = random.randint(0, 2)
-            player = self.all_players[num]
-            self.shop_list.append(player)
-        self.create_sprites(self.shop_list)
-        self.position_sprites(self.shop_sprite_list)
+        high = len(shop1) 
+        quarter = high/4
+        half = high/2
+        quarter3 = high/4 *3
+        self.shop_sprite_1 = shop1[random.randint(0, quarter)]
+        self.shop_sprite_2 = shop1[random.randint(quarter+1, half)]
+        self.shop_sprite_3 = shop1[random.randint(half+1, quarter3)]
+        self.shop_sprite_4 = shop1[random.randint(quarter3+1, high-1)]
+        
+        self.position_shop_sprites(self.shop_sprite_1, self.shop_sprite_2,
+                                   self.shop_sprite_3, self.shop_sprite_4)
+            
 
     def lock(self, event):
         pass
 
+    
+    def on_show_view(self):
+        arcade.set_background_color(arcade.color.LIGHT_SKY_BLUE)
+        #activates widgets
+        self.ui_manager.enable()
+
+    def on_hide_view(self):
+        self.ui_manager.disable()
+
             
 if __name__ == '__main__':
-    window = TeamView()
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
+    team_builder = TeamBuilder()
+    window.show_view(team_builder)
+    team_builder.setup()
     arcade.run()
